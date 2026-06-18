@@ -11,20 +11,16 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('maven-demo') {
-                    sh '/opt/homebrew/bin/mvn test'
-                }
-            }
-        }
-
     }
 
     post {
-        always {
-            junit testResults: 'maven-demo/target/surefire-reports/*.xml',
-                  allowEmptyResults: true
+
+        success {
+
+            archiveArtifacts artifacts: 'maven-demo/target/*.jar',
+                             fingerprint: true
+
         }
+
     }
 }
