@@ -5,13 +5,17 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '/opt/homebrew/bin/mvn clean package'
+                dir('maven-demo') {
+                    sh '/opt/homebrew/bin/mvn clean package'
+                }
             }
         }
 
         stage('Test') {
             steps {
-                sh '/opt/homebrew/bin/mvn test'
+                dir('maven-demo') {
+                    sh '/opt/homebrew/bin/mvn test'
+                }
             }
         }
 
@@ -19,7 +23,7 @@ pipeline {
 
     post {
         always {
-            junit testResults: 'target/surefire-reports/*.xml',
+            junit testResults: 'maven-demo/target/surefire-reports/*.xml',
                   allowEmptyResults: true
         }
     }
